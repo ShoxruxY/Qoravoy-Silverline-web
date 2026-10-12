@@ -26,7 +26,6 @@ export default function PatientRegistrationForm() {
   const [errors, setErrors] = useState<FieldErrors>({});
   const [formError, setFormError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  const [reference, setReference] = useState<string | null>(null);
   const [saved, setSaved] = useState<{ reference: string; age: number } | null>(
     null,
   );
@@ -76,8 +75,6 @@ export default function PatientRegistrationForm() {
       });
 
       const data = await res.json().catch(() => ({}));
-      console.log("Response data after patient registration");
-      console.log(await res.json());
 
       if (res.status === 422 && data.fieldErrors) {
         setErrors(data.fieldErrors);
@@ -89,7 +86,6 @@ export default function PatientRegistrationForm() {
         return;
       }
 
-      setReference(data.reference);
       setSaved({ reference: data.reference, age: data.age });
     } catch {
       setFormError(
@@ -101,7 +97,7 @@ export default function PatientRegistrationForm() {
   }
 
   // ---------------------------------------------------------------- success
-  if (reference) {
+  if (saved) {
     return (
       <div
         className="rounded-xl border border-emerald-200 bg-emerald-50 p-6"
